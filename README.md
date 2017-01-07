@@ -2,7 +2,7 @@
 ### This simple chatbot is something like simsim or 小黄鸡（in chinese）, the data structure behind the chatbot please see http://blog.csdn.net/huyisu/article/details/35552827
 ### Support three mode usage:
 #### 1. chat mode: python main.py 'chat' [your_input]
-#### for example: python main.py 'chat' '最近那么样'
+#### for example: python main.py 'chat' '最近怎么样'
 #### 2. chat_multi mode: python main.py 'chat_multi' [your_input]
 #### for example: python main.py 'chat_multi' '让我们开始聊天吧'
 #### 3. train mode: python main.py 'train' [your_input] [your_answer]
