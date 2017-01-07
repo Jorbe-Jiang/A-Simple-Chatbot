@@ -239,10 +239,10 @@ def get_all_ans(user_input, hash_table):
 	return all_ans_li
 
 
-def chat(user_input, flag = 0):
+def chat(user_input, hash_table = {}, flag = 0):
 	if flag == 0:      #not use chat_multi mode
 		user_input = unicode(user_input, 'utf-8') 
-	hash_table = load_hash_table()
+		hash_table = load_hash_table()
 	all_ans_li = get_all_ans(user_input, hash_table) #user_input must be unicode
 	#for ans_li in all_ans_li:
 	#	for ans in ans_li:
@@ -261,9 +261,10 @@ def chat(user_input, flag = 0):
 
 def chat_multi(user_input):
 	user_input = unicode(user_input, 'utf-8')
+	hash_table = load_hash_table()
 	i = 0
 	while i < 30:
-		ans = chat(user_input, 1)
+		ans = chat(user_input, hash_table, 1)
 		if i == 0:
 			print u'小黄1: '+user_input
 			print u'小黄2: '+ans
