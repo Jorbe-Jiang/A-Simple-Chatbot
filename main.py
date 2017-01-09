@@ -7,7 +7,7 @@ import random
 import chardet
 
 '''
-Note:all the text before write into file must be unicode, include U1s, U2s, U1, U2
+Note:all the text before write into file must be unicode, excepts U2s, U2
 '''
 
 def read_conversations(conv_file):
@@ -92,7 +92,7 @@ def build_hash_table():
 			for word in max_len_words_li:
 				#print chardet.detect(word)
 				#exit()
-				build_hash(word, 0, hash_table, unicode(U2s[n], 'utf-8'))
+				build_hash(word, 0, hash_table, U2s[n])
 				word = word.encode('utf-8')
 				if word in uni_words_li:
 					continue
@@ -133,7 +133,7 @@ def train_hash_table(U1, U2):
 		for word in max_len_words_li:
 			#print chardet.detect(word)
 			#exit()
-			build_hash(word, 0, hash_table, unicode(U2, 'utf-8'))
+			build_hash(word, 0, hash_table, U2)
 			word = word.encode('utf-8')
 			if word in uni_words_li:
 				continue
@@ -175,9 +175,9 @@ def search_ans(word, hash_table):
 					ans_li.append(hash_table[word[0]][j])
 					j += 1
 			else:
-				ans_li.append(u'哈哈，您真有趣！')
+				ans_li.append('哈哈，您真有趣！')
 		else:
-			ans_li.append(u'哈哈，您真有趣！')
+			ans_li.append('哈哈，您真有趣！')
 		return ans_li
 
 	tmp_hash = {}
@@ -187,7 +187,7 @@ def search_ans(word, hash_table):
 			if hash_table.has_key(word[i]):
 				tmp_hash = hash_table[word[i]]
 			else:
-				ans_li.append(u'哈哈，您真有趣！')
+				ans_li.append('哈哈，您真有趣！')
 				return ans_li
 		elif i == len(word)-1:
 			if tmp_hash.has_key(word[i]):
@@ -197,10 +197,10 @@ def search_ans(word, hash_table):
 						ans_li.append(tmp_hash[word[i]][j])
 						j += 1
 				else:
-					ans_li.append(u'哈哈，您真有趣！')
+					ans_li.append('哈哈，您真有趣！')
 					return ans_li
 			else:
-				ans_li.append(u'哈哈，您真有趣！')
+				ans_li.append('哈哈，您真有趣！')
 				return ans_li
 		else:
 			if tmp_hash.has_key(word[i]):
@@ -209,7 +209,7 @@ def search_ans(word, hash_table):
 				else:
 					tmp_hash = tmp_hash[word[i]]
 			else:
-				ans_li.append(u'哈哈，您真有趣！')
+				ans_li.append('哈哈，您真有趣！')
 				return ans_li
 		i += 1
 	
@@ -240,8 +240,8 @@ def get_all_ans(user_input, hash_table):
 
 
 def chat(user_input, hash_table = {}, flag = 0):
+	user_input = unicode(user_input, 'utf-8') 
 	if flag == 0:      #not use chat_multi mode
-		user_input = unicode(user_input, 'utf-8') 
 		hash_table = load_hash_table()
 	all_ans_li = get_all_ans(user_input, hash_table) #user_input must be unicode
 	#for ans_li in all_ans_li:
@@ -253,30 +253,29 @@ def chat(user_input, hash_table = {}, flag = 0):
 	ans = ans_li[seed_2]
 	if flag == 0:
 		print u'You: '+user_input
-		print u'小黄: '+ans
+		print '小黄: '+ans
 		print len(all_ans_li)
 		print len(ans_li)
 	
 	return ans
 
 def chat_multi(user_input):
-	user_input = unicode(user_input, 'utf-8')
 	hash_table = load_hash_table()
 	i = 0
 	while i < 30:
 		ans = chat(user_input, hash_table, 1)
 		if i == 0:
-			print u'小黄1: '+user_input
-			print u'小黄2: '+ans
+			print '小黄1: '+user_input
+			print '小黄2: '+ans
 			user_input = ans
 			i += 1
 			continue		 
 		if i % 2 == 1:
 			#print chardet.detect(ans)
-			print u'小黄1: '+ans
+			print '小黄1: '+ans
 		else:		
 			#print chardet.detect(ans)
-			print u'小黄2: '+ans
+			print '小黄2: '+ans
 		user_input = ans
 		i += 1
 
