@@ -279,8 +279,52 @@ def chat_multi(user_input):
 		user_input = ans
 		i += 1
 
+def del_ans(word, del_ans_keyword, i, hash_table):
+	if i == len(word)-1:
+		if hash_table.has_key(word[i]):
+			if isinstance(hash_table[word[i]], list):
+				j = 0
+				while j < len(hash_table[word[i]])-1:       #may have more than one ans
+					if del_ans_keyword in hash_table[word[i]][j]:
+						hash_table[word[i]].remove(hash_table[word[i]][j])
+					j += 1
+			else:
+				print 'There is no ans for this keyword!!!'
+		else:
+			print 'There is no ans for this keyword!!!'
+		#return hash_table
+	else:
+		if hash_table.has_key(word[i]):
+			del_ans(word, del_ans_keyword, i+1, hash_table[word[i]])
+		else:
+			print 'The keyword is not in the hash table!!!'
+		
+	return hash_table	
 
-################################################
+def del_ans_hash_table(word, del_ans_keyword):
+	word = unicode(word, 'utf-8')
+	hash_table = load_hash_table()
+	hash_table_file = 'hash_table.pkl'
+	hash_table_file_fp = open(hash_table_file, 'w')
+	if len(word) == 1:
+		if hash_table.has_key(word[0]):
+			if isinstance(hash_table[word[0]], list):
+				j = 0
+				while j < len(hash_table[word[0]])-1:       #may have more than one ans
+					if del_ans_keyword in hash_table[word[0]][j]:
+						hash_table[word[0]].remove(hash_table[word[0]][j])
+					j += 1
+			else:
+				print 'There is no ans for this keyword!!!'
+		else:
+			print 'The keyword is not in the hash table!!!'
+	else:
+		hash_table = del_ans(word, del_ans_keyword, 0, hash_table)
+	pickle.dump(hash_table, hash_table_file_fp, True)
+	hash_table_file_fp.close()
+	print 'Delete the ans which have the word:{} in the ans for the keyword:{} Successfully...'.format(del_ans_keyword, word.encode('utf-8'))
+
+####################################################################################################
 if __name__=="__main__":
 	build_hash_table()    #when first use, execute this function ,then commented out this function
 	#exit()
@@ -295,9 +339,14 @@ if __name__=="__main__":
 		U1 = sys.argv[2]
 		U2 = sys.argv[3]
 		train_hash_table(U1, U2)
+	elif sys.argv[1] == 'del':
+		keyword = sys.argv[2]
+		del_ans_keyword = sys.argv[3]
+		del_ans_hash_table(keyword, del_ans_keyword)
 	else:
 		print 'Please see the usage...'
 		print "Usage1: python main.py 'chat' [user_input]"
 		print "Usage2: python main.py 'chat_multi' [user_input]"
 		print "Usage3: python main.py 'train' [U1] [U2]"
+		print "Usage4: python main.py 'del' [keyword] [del_ans_keyword]"
 		exit()
